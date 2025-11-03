@@ -1,4 +1,5 @@
-'use client'; 
+"use client";
+import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Checkbox } from '@/src/components/ui/checkbox';
@@ -33,15 +34,17 @@ export function LoginForm() {
         ENTRAR
       </Button>
       
-      <Button 
-        type="button" 
-        variant="secondary"
-        className="w-64"
-      >
-        CADASTRAR
-      </Button>
+      <Link href="/cadastro">
+        <Button 
+          variant="secondary"
+          className="w-64"
+        >
+          CADASTRAR
+        </Button>
+      </Link>
+    
 
-      <a href="#" className="mt-2 text-center text-sm text-white hover:underline">
+      <a href="Alterar-senha" className="mt-2 text-center text-sm text-white hover:underline">
         Esqueceu a senha?
       </a>
     </form>
