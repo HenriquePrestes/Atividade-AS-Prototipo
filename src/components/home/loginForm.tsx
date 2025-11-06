@@ -1,20 +1,26 @@
 "use client";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Checkbox } from '@/src/components/ui/checkbox';
 
 export function LoginForm() {
-  
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('/manutencao');
+  };
+
   return (
-    <form className="flex w-full flex-col items-center gap-4">
-      
+    <form onSubmit={handleSubmit} className="flex w-full flex-col items-center gap-4">
       <Input 
         type="text" 
         placeholder="Usuário" 
         className="w-64"
       />
-      
+
       <Input 
         type="password" 
         placeholder="Senha" 
@@ -33,7 +39,7 @@ export function LoginForm() {
       >
         ENTRAR
       </Button>
-      
+
       <Link href="/cadastro">
         <Button 
           variant="secondary"
@@ -42,7 +48,6 @@ export function LoginForm() {
           CADASTRAR
         </Button>
       </Link>
-    
 
       <a href="Alterar-senha" className="mt-2 text-center text-sm text-white hover:underline">
         Esqueceu a senha?

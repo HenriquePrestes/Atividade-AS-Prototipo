@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import BuscaHistorico from '@/src/components/shared/BuscaHistorico'; 
 
-// 2. Definir os dados mockados para o histórico
 const mockData = [
   { veiculo: 'AET-2354', nFogo: 'XX' },
   { veiculo: 'OPT-8965', nFogo: 'XX' },
@@ -11,11 +10,10 @@ const mockData = [
 ];
 
 export default function ManutencaoPage() {
-  
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-linear-to-br from-blue-400 to-white p-6">
       
-      <BuscaHistorico data={mockData} />
+      <BuscaHistorico data={mockData} basePath="manutencao" />
 
       <Link 
         href="/" 

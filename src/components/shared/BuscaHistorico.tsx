@@ -10,10 +10,10 @@ type HistoricoItem = {
 
 type BuscaHistoricoProps = {
   data: HistoricoItem[];
+  basePath: "manutencao" | "historico"; 
 };
 
-export default function BuscaHistorico({ data }: BuscaHistoricoProps) {
-  // 2. Instanciar o router
+export default function BuscaHistorico({ data, basePath }: BuscaHistoricoProps) {
   const router = useRouter(); 
   const [placa, setPlaca] = useState('');
 
@@ -24,14 +24,12 @@ export default function BuscaHistorico({ data }: BuscaHistoricoProps) {
       return;
     }
     
-    // 3. Navegar para a nova rota dinâmica com a placa
-    console.log('Navegando para:', `/manutencao/${placa.toUpperCase()}`);
-    router.push(`/manutencao/${placa.toUpperCase()}`);
+    console.log('Navegando para:', `/${basePath}/${placa.toUpperCase()}`);
+    router.push(`/${basePath}/${placa.toUpperCase()}`);
   };
 
   return (
     <div className="w-full max-w-3xl">
-      
       <form 
         onSubmit={handleSearch} 
         className="flex w-full flex-col items-center gap-4"
