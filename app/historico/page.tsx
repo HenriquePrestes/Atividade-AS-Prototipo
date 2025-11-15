@@ -1,7 +1,7 @@
-import Link from 'next/link';
+import AuthenticatedLayout from '@/src/components/layout/AuthenticatedLayout';
 import BuscaHistorico from '@/src/components/shared/BuscaHistorico'; 
 
-// 2. Mock de dados 
+// Mock de dados 
 const mockData = [
   { veiculo: 'AET-2354', nFogo: 'XX' },
   { veiculo: 'OPT-8965', nFogo: 'XX' },
@@ -12,16 +12,11 @@ const mockData = [
 
 export default function HistoricoPage() {
   return (
-  <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-linear-to-br from-blue-400 to-white p-6">
-      
-      <BuscaHistorico data={mockData} basePath="historico" />
-
-      <Link 
-        href="/" 
-        className="absolute bottom-6 right-6 rounded-lg bg-white/90 py-2 px-4 text-sm text-gray-700 shadow-md transition hover:bg-white"
-      >
-        &larr; Voltar
-      </Link>
-    </div>
+    <AuthenticatedLayout showBackButton={true} backButtonHref="/">
+      <div className="flex flex-col items-center justify-center py-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">Histórico de Pneus</h1>
+        <BuscaHistorico data={mockData} basePath="historico" />
+      </div>
+    </AuthenticatedLayout>
   );
 }

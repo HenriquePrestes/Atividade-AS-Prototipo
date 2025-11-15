@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import AuthenticatedLayout from '@/src/components/layout/AuthenticatedLayout';
 import CadastroPneu from '@/src/components/shared/CadastroPneu'; 
 
 // A página recebe 'params' como a página-mãe
@@ -9,18 +9,12 @@ interface CadastroPneuPageProps {
 }
 
 export default function CadastroPneuPage({ params }: CadastroPneuPageProps) {
-  
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-linear-to-br from-blue-400 to-white p-6">
-      
-      <CadastroPneu />
-
-      <Link 
-        href={`/manutencao/${params.placa}`} 
-        className="absolute bottom-6 right-6 rounded-lg bg-white/90 py-2 px-4 text-sm text-gray-700 shadow-md transition hover:bg-white"
-      >
-        &larr; Voltar
-      </Link>
-    </div>
+    <AuthenticatedLayout showBackButton={true} backButtonHref={`/manutencao/${params.placa}`}>
+      <div className="flex flex-col items-center justify-center py-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Cadastro de Pneu</h1>
+        <CadastroPneu />
+      </div>
+    </AuthenticatedLayout>
   );
 }
