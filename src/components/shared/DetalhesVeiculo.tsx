@@ -2,13 +2,7 @@
 
 import Link from 'next/link'; 
 import { PlusIcon } from '@heroicons/react/24/solid';
-
-// 1. Mock de dados com IDs
-const numerosFogoMock = [
-  { id: 1, nome: 'NÚMERO DE FOGO 1' },
-  { id: 2, nome: 'NÚMERO DE FOGO 2' },
-  { id: 3, nome: 'NÚMERO DE FOGO 3' },
-];
+import { usePneus } from '@/src/hooks/usePneus';
 
 interface DetalhesVeiculoProps {
   placa: string;
@@ -25,21 +19,28 @@ export default function DetalhesVeiculo({ placa, flow, linkConfig }: DetalhesVei
   
   const chassi = 'XXXXXXXXXXXXXX';
   const tipo = 'LEVE';
+  const placaExibida = placa || 'N/A';
+  
+  const { pneus, adicionarPneu } = usePneus(placaExibida);
+
+  const handleAdicionarPneu = () => {
+    adicionarPneu();
+  };
 
   return (
     <div className="flex w-full max-w-lg flex-col items-center gap-6">
       
       <div className="w-full rounded-lg bg-blue-300 p-6 text-center shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800">{placa}</h2>
+        <h2 className="text-3xl font-bold text-gray-800">{placaExibida}</h2>
         <p className="mt-2 text-lg font-medium text-gray-700">CHASSI : {chassi}</p>
         <p className="text-lg font-medium text-gray-700">TIPO CAMINHÃO : {tipo}</p>
       </div>
 
       <div className="flex w-full flex-col gap-3">
-        {numerosFogoMock.map((pneu) => {
+        {pneus.map((pneu) => {
           const destination = flow === 'manutencao'
-            ? `/manutencao/${placa}/editar-pneu/${pneu.id}`
-            : `/historico/${placa}/detalhe-pneu/${pneu.id}`;
+            ? `/manutencao/${encodeURIComponent(placaExibida)}/editar-pneu/${pneu.id}`
+            : `/historico/${encodeURIComponent(placaExibida)}/detalhe-pneu/${pneu.id}`;
             
           return (
             <Link
@@ -57,6 +58,15 @@ export default function DetalhesVeiculo({ placa, flow, linkConfig }: DetalhesVei
           ...
         </div>
       </div>
+
+      {flow === 'manutencao' && (
+        <button
+          onClick={handleAdicionarPneu}
+          className="w-full rounded-lg bg-green-500 py-3 px-6 text-center text-lg font-bold text-white shadow-lg transition hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+        >
+          + ADICIONAR NOVO PNEU
+        </button>
+      )}
 
       {linkConfig && (
         <Link 

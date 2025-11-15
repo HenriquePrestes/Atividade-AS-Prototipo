@@ -3,17 +3,20 @@ import CadastroPneu from '@/src/components/shared/CadastroPneu';
 
 // A página recebe 'params' como a página-mãe
 interface CadastroPneuPageProps {
-  params: {
+  params: Promise<{
     placa: string;
-  };
+    pneuId: string;
+  }>;
 }
 
-export default function CadastroPneuPage({ params }: CadastroPneuPageProps) {
+export default async function CadastroPneuPage({ params }: CadastroPneuPageProps) {
+  const resolvedParams = await params;
+  
   return (
-    <AuthenticatedLayout showBackButton={true} backButtonHref={`/manutencao/${params.placa}`}>
+    <AuthenticatedLayout showBackButton={true} backButtonHref={`/manutencao/${resolvedParams.placa}`}>
       <div className="flex flex-col items-center justify-center py-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Cadastro de Pneu</h1>
-        <CadastroPneu />
+        <CadastroPneu placa={resolvedParams.placa} />
       </div>
     </AuthenticatedLayout>
   );

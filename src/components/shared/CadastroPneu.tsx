@@ -6,6 +6,7 @@ import {
   MinusIcon, 
   PlusIcon,
 } from '@heroicons/react/24/solid';
+import { usePneus } from '@/src/hooks/usePneus';
 
 // Função helper para os botões de checkbox (só para o visual da imagem)
 function CustomCheckbox({ label, defaultChecked = false }: { label: string, defaultChecked?: boolean }) {
@@ -23,12 +24,18 @@ function CustomCheckbox({ label, defaultChecked = false }: { label: string, defa
   );
 }
 
-export default function CadastroPneu() {
+interface CadastroPneuProps {
+  placa?: string;
+}
+
+export default function CadastroPneu({ placa = 'DEFAULT' }: CadastroPneuProps) {
   
   const [pressao, setPressao] = useState(40);
   const [sulco, setSulco] = useState(2);
   const [posicao, setPosicao] = useState('traseiro-D');
   const [numeroFogo, setNumeroFogo] = useState('1');
+  
+  const { pneus } = usePneus(placa);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -52,9 +59,11 @@ export default function CadastroPneu() {
               onChange={(e) => setNumeroFogo(e.target.value)}
               className="w-full rounded-md border border-gray-300 bg-white py-2 px-3 text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
             >
-              <option value="1">NÚMERO DE FOGO 1</option>
-              <option value="2">NÚMERO DE FOGO 2</option>
-              <option value="3">NÚMERO DE FOGO 3</option>
+              {pneus.map((pneu) => (
+                <option key={pneu.id} value={pneu.id.toString()}>
+                  {pneu.nome}
+                </option>
+              ))}
             </select>
           </div>
         </div>
