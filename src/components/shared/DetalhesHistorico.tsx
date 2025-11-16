@@ -1,21 +1,22 @@
 interface DetalhesPneuProps {
   titulo: string;
+  quilometragem?: string;
 }
 
-const dados = [
-  { label: 'QUILOMETRAGEM', value: '129.038-KM' },
-  { label: 'PRESSÃO MEDIDA', value: '50' },
-  { label: 'RODÍZIO', value: 'S' },
-  { label: 'CONSERTO', value: 'N' },
-  { label: 'RECAPAGEM', value: 'S' },
-  { label: 'SUCATEADO', value: 'S' },
-  { label: 'ESTOQUE', value: 'S' },
-  { label: 'VENDIDO', value: 'N' },
-  { label: 'PROFUNDIDADE DO SULCO', value: '2' },
-  { label: 'POSIÇÃO', value: 'Traseiro-D-1' },
-];
+export default function DetalhesPneuHistorico({ titulo, quilometragem = '129.038' }: DetalhesPneuProps) {
+  const dados = [
+    { label: 'QUILOMETRAGEM', value: `${quilometragem} KM` },
+    { label: 'PRESSÃO MEDIDA', value: '50' },
+    { label: 'RODÍZIO', value: 'S' },
+    { label: 'CONSERTO', value: 'N' },
+    { label: 'RECAPAGEM', value: 'S' },
+    { label: 'SUCATEADO', value: 'S' },
+    { label: 'ESTOQUE', value: 'S' },
+    { label: 'VENDIDO', value: 'N' },
+    { label: 'PROFUNDIDADE DO SULCO', value: '2' },
+    { label: 'POSIÇÃO', value: 'Traseiro-D-1' },
+  ];
 
-export default function DetalhesPneuHistorico({ titulo }: DetalhesPneuProps) {
   return (
     <div className="w-full max-w-lg overflow-hidden rounded-xl bg-white/90 shadow-2xl backdrop-blur-sm">
       

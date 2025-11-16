@@ -5,8 +5,11 @@ import {
   ListBulletIcon, 
   MinusIcon, 
   PlusIcon,
+  PencilIcon,
+  CheckIcon,
 } from '@heroicons/react/24/solid';
 import { usePneus } from '@/src/hooks/usePneus';
+import { useQuilometragem } from '@/src/hooks/useQuilometragem';
 
 // Função helper para os botões de checkbox (só para o visual da imagem)
 function CustomCheckbox({ label, defaultChecked = false }: { label: string, defaultChecked?: boolean }) {
@@ -34,8 +37,37 @@ export default function CadastroPneu({ placa = 'DEFAULT' }: CadastroPneuProps) {
   const [sulco, setSulco] = useState(2);
   const [posicao, setPosicao] = useState('traseiro-D');
   const [numeroFogo, setNumeroFogo] = useState('1');
+  const [editandoQuilometragem, setEditandoQuilometragem] = useState(false);
+  const [tempQuilometragem, setTempQuilometragem] = useState('');
   
   const { pneus } = usePneus(placa);
+  const { quilometragem, atualizarQuilometragem, obterQuilometragemFormatada } = useQuilometragem(placa);
+
+  const iniciarEdicaoQuilometragem = () => {
+    setTempQuilometragem(quilometragem);
+    setEditandoQuilometragem(true);
+  };
+
+  const salvarQuilometragem = () => {
+    if (tempQuilometragem.trim()) {
+      atualizarQuilometragem(tempQuilometragem);
+    }
+    setEditandoQuilometragem(false);
+    setTempQuilometragem('');
+  };
+
+  const cancelarEdicaoQuilometragem = () => {
+    setEditandoQuilometragem(false);
+    setTempQuilometragem('');
+  };
+
+  const handleQuilometragemKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      salvarQuilometragem();
+    } else if (e.key === 'Escape') {
+      cancelarEdicaoQuilometragem();
+    }
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -70,9 +102,48 @@ export default function CadastroPneu({ placa = 'DEFAULT' }: CadastroPneuProps) {
 
         <div>
           <label className="block text-sm font-medium text-gray-600">QUILOMETRAGEM</label>
-          <div className="mt-1 w-full rounded-lg border border-gray-400 bg-gray-300 p-3 text-center text-lg font-medium text-gray-700 shadow-inner">
-            XXXXXXX-KM
-          </div>
+          {editandoQuilometragem ? (
+            <div className="mt-1 flex items-center gap-2">
+              <input
+                type="text"
+                value={tempQuilometragem}
+                onChange={(e) => setTempQuilometragem(e.target.value)}
+                onKeyDown={handleQuilometragemKeyDown}
+                placeholder="Digite a quilometragem"
+                className="flex-1 rounded-lg border border-blue-400 bg-white p-3 text-center text-lg font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={salvarQuilometragem}
+                className="rounded-lg bg-green-500 p-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+                title="Salvar quilometragem"
+              >
+                <CheckIcon className="h-5 w-5" />
+              </button>
+            </div>
+          ) : (
+            <div 
+              className="mt-1 flex w-full cursor-pointer items-center justify-between rounded-lg border border-gray-400 bg-gray-100 p-3 text-center text-lg font-medium text-gray-700 shadow-inner transition hover:bg-gray-200"
+              onClick={iniciarEdicaoQuilometragem}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  iniciarEdicaoQuilometragem();
+                }
+              }}
+            >
+              <span className="flex-1">{obterQuilometragemFormatada()}</span>
+              <PencilIcon className="h-5 w-5 text-gray-500" />
+            </div>
+          )}
+          {editandoQuilometragem && (
+            <p className="mt-1 text-xs text-gray-500">
+              Pressione Enter para salvar ou Esc para cancelar
+            </p>
+          )}
         </div>
 
         <div className="flex justify-between gap-4">
